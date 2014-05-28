@@ -1,0 +1,38 @@
+<html>
+    <script language="javascript" type="text/javascript">  
+        var output
+        function start() {
+            connect()
+            output = document.getElementById("output")
+        }
+
+        function show(message) {
+            var pre = document.createElement("p")
+            pre.innerHTML = message
+            output.appendChild(pre);
+        }
+
+        function connect() {
+            websocket = new WebSocket("%s");
+            websocket.onmessage = function(e) {
+                show(e.data)
+            }
+        }
+
+        function enter(code) {
+            if (code == 13) {
+                message = document.getElementById("message")
+                websocket.send(message.value)
+                show("> " + message.value)
+                message.value = ""
+            }
+        }
+
+        window.addEventListener("load", start, false);
+    </script>
+    <body style='text-align: center;'>
+        <div id="output"></div>
+        <br/>
+        <input id="message" onkeyup='enter(event.which)' type="text"></input>
+    </body>
+</html>
