@@ -30,6 +30,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 func WaitedCopy(first, second WaitedClient) {
     io.Copy(first.C, second.C)
+    fmt.Fprintf(first.C, "[!] Disconnected")
     first.W <- 0
 }
 
@@ -41,7 +42,10 @@ func Communicate(first, second WaitedClient) {
 func ChooseTwo() {
     for {
         first := <-Clients
+        fmt.Fprintf(first.C, "[!] Wait...")
         second := <-Clients
+        fmt.Fprintf(first.C, "[!] Go!")
+        fmt.Fprintf(second.C, "[!] Go!")
         go Communicate(first, second)
     }
 }
